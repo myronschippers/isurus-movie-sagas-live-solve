@@ -16,6 +16,7 @@ import axios from 'axios';
 function* rootSaga() {
     yield takeEvery('GET_MOVIES', allMoviesSaga);
     yield takeEvery('GET_MOVIE', movieSaga);
+    yield takeEvery('PUT_MOVIE', movieUpdateSaga);
 }
 
 // ALL SAGAS
@@ -53,6 +54,16 @@ function* movieSaga(action) {
     } catch(err) {
         console.log('GET movie error: ', err);
     }
+}
+
+function* movieUpdateSaga(action) {
+    try {
+        yield axios.put(`/movies/single/${action.payload.id}`, action.payload);
+        yield put({ type: 'GET_MOVIES' });
+    } catch(err) {
+        console.log('PUT movie error: ', err);
+    }
+
 }
 
 // Create sagaMiddleware

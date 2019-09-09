@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import mapStoreToProps from '../../../redux/mapStoreToProps';
+import  { withRouter } from 'react-router-dom';
 
 class DetailPage extends Component {
     componentDidMount() {
@@ -10,12 +11,16 @@ class DetailPage extends Component {
         });
     }
 
+    clickEdit = (event) => {
+        this.props.history.push(`/edit/${this.props.store.movie.movie_id}`);
+    }
+
     render() {
         const {
             movie
         } = this.props.store;
         let displayGenres = [];
-        
+
         if (movie.allGenres != null) {
             displayGenres = movie.allGenres.map((genre, index) => {
                 return <li key={index}>{genre.genreName}</li>
@@ -32,9 +37,10 @@ class DetailPage extends Component {
                 <ul>
                     {displayGenres}
                 </ul>
+                <button onClick={this.clickEdit}>Edit Info</button>
             </div>
         );
     }
 }
 
-export default connect(mapStoreToProps)(DetailPage);
+export default connect(mapStoreToProps)(withRouter(DetailPage));
